@@ -7,7 +7,9 @@
   "license": "No",
   "private": true,
   "scripts": {
-    "start": "webpack && babel-node server.js"
+    "start": "webpack && nodemon ./server.js",
+    "dev-client": "webpack-dev-server",
+    "dev-server": "nodemon ./server.js 3000"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
@@ -27,6 +29,7 @@
     "handlebars-loader": "^1.6.0",
     "handlebars-template-loader": "^0.8.0",
     "handlebars-webpack-plugin-simple": "^1.2.6",
+    "nodemon": "^1.12.1",
     "react-router-dom": "^4.2.2"
   }
 }
