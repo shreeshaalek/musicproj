@@ -4,7 +4,7 @@ var bodyParser = require('body-parser')
 
 var GoogleAuth = require('google-auth-library');
 
-
+var token;
 let app = express();
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
@@ -15,28 +15,38 @@ app.use(express.static(path.resolve(__dirname, './', 'dist')));
 
 // Always return the main index.html, so react-router render the route in the client
 app.get('/', (req, res) => {
-  res.sendFile(path.resolve(__dirname, './', 'dist', 'index.html'));
-});
-
-// var auth = new GoogleAuth;
-// var client = new auth.OAuth2(CLIENT_ID, '', '');
-// client.verifyIdToken(
-//     token,
-//     CLIENT_ID,
-//     // Or, if multiple clients access the backend:
-//     //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3],
-//     function(e, login) {
-//       var payload = login.getPayload();
-//       var userid = payload['sub'];
-//       // If request specified a G Suite domain:
-//       //var domain = payload['hd'];
-//     });
-app.get('/tokensignin', (req, res) => {
+  // res.sendFile(path.resolve(__dirname, './', 'dist', 'index.html'));
   res.send('hello')
 });
 app.post('/tokensignin', (req, res) => {
-    res.send('hello')
-    // res.send('hello'); 
+  token = req.body['idtoken'].trim().replace(/"/g, '');
   });
-
-app.listen(3000, ()=>{console.log('listening in port 3000');});
+  app.get('/tokensignin', (req, res) => {
+    var auth = new GoogleAuth;
+    var client = new auth.OAuth2('464336086840-8mbhkflj2q16uhjv84cqoskng1vk92iv.apps.googleusercontent.com', 'ioG62HCPVCm4BBSFBSkvtYX5', 'http://localhost:4200');
+    var verifytoken = new Promise(function(resolve, reject) {
+      client.verifyIdToken(
+        token,
+        '464336086840-8mbhkflj2q16uhjv84cqoskng1vk92iv.apps.googleusercontent.com',
+        // Or, if multiple clients access the backend:
+        //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3],
+        function(e, login) {
+          if(login) {
+            var payload = login.getPayload();
+            var userid = payload['sub'];
+            resolve(userid);
+          }
+          else {
+            reject('fail')
+          }
+          // var payload = login.getPayload();
+          // var userid = payload['sub'];
+          // // If request specified a G Suite domain:
+          // var domain = payload['hd'];
+    });
+    // res.send(token);
+  }).then(function(googleId) {
+    res.send(googleId);
+  }).catch(function(e){res.send(e)});
+});
+app.listen(4200, ()=>{console.log('listening in port 4200');});

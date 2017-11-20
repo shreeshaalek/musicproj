@@ -38,15 +38,15 @@ class App extends React.Component {
 
         var isSignedIn = auth2.isSignedIn.get();
         var currentUser = auth2.currentUser.get().getBasicProfile();
-        var id_token = auth2.currentUser.get().getAuthResponse(true);
+        var tokenId= auth2.currentUser.get().getAuthResponse(true).id_token;
         var xhr = new XMLHttpRequest();
 
         xhr.open('POST', '/tokensignin', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        // xhr.onload = function() {
-        //   console.log('Signed in as: ' + xhr.responseText);
-        // };
-        xhr.send('idtoken=' + JSON.stringify(id_token))
+        xhr.onload = function() {
+          console.log('Signed in as: ' + xhr.responseText);
+        };
+        xhr.send('idtoken=' + JSON.stringify(tokenId))
 
       });
 
