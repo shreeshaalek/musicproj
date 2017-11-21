@@ -39,10 +39,6 @@ app.post('/tokensignin', (req, res) => {
           else {
             reject('fail')
           }
-          // var payload = login.getPayload();
-          // var userid = payload['sub'];
-          // // If request specified a G Suite domain:
-          // var domain = payload['hd'];
     });
     // res.send(token);
   }).then(function(googleId) {

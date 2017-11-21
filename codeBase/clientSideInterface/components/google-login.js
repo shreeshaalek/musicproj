@@ -1,6 +1,6 @@
 import React from 'react'
 /* global gapi */
-class App extends React.Component {
+class GoogleLogin extends React.Component {
 
   constructor() {
 
@@ -47,7 +47,7 @@ class App extends React.Component {
           console.log('Signed in as: ' + xhr.responseText);
         };
         xhr.send('idtoken=' + JSON.stringify(tokenId))
-
+        console.log(currentUser)
       });
 
     });
@@ -75,4 +75,4 @@ class App extends React.Component {
 
 }
 
-export default App
+export default GoogleLogin
