@@ -1,8 +1,7 @@
 import React from 'react'
 import GoogleLogin from '../components/google-login'
-import {Link} from 'react-router-dom';
 /* global gapi */
-class Loginpage extends React.Component {
+class Another extends React.Component {
 
   constructor() {
 
@@ -16,12 +15,10 @@ class Loginpage extends React.Component {
   render() {
 
     return (
-      <div>
-        <GoogleLogin></GoogleLogin>
-      </div>
+      <p>Another</p>
     );
   }
 
 }
 
-export default Loginpage
+export default Another

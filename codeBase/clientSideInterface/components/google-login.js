@@ -1,10 +1,11 @@
 import React from 'react'
+import {browserHistory} from "react-router";
 /* global gapi */
 class GoogleLogin extends React.Component {
 
-  constructor() {
+  constructor(props) {
 
-    super()
+    super(props)
   }
 
   componentDidMount() {
@@ -44,11 +45,11 @@ class GoogleLogin extends React.Component {
         xhr.open('POST', '/homepage', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onload = function() {
-          console.log('Signed in as: ' + xhr.responseText);
+          console.log('Signed in as: ' + xhr.responseText); 
+          this.props.history.push('/homepage');
+          // if (xhr.responseText === CUR)
         };
         xhr.send('idtoken=' + JSON.stringify(tokenId))
-        console.log(currentUser)
-        console.log('Signed in as: ' + xhr.readyState);
       });
 
     });
