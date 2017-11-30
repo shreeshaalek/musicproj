@@ -7,7 +7,7 @@
   "license": "No",
   "private": true,
   "scripts": {
-    "start": "webpack && nodemon ./server.js",
+    "start": "webpack -w | nodemon ./server.js",
     "dev-client": "webpack-dev-server",
     "dev-server": "nodemon ./server.js 3000"
   },

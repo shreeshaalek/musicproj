@@ -15,7 +15,7 @@ class Another extends React.Component {
   render() {
 
     return (
-      <p>Another</p>
+      <a href="/auth/google">Sign In with Google</a>
     );
   }
 
