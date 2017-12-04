@@ -5,6 +5,9 @@ var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var React = require('react');
 var ReactDOMServer = require('react-dom/server');
+var fs = require('fs');
+var pretty = require('pretty');
+import Another from'./clientSideInterface/pages/homepage';
 
 var GoogleAuth = require('google-auth-library');
 
@@ -67,7 +70,19 @@ app.get('/homepage', (req, res) => {
   // res.send('shreessha')
 });
 app.get('/another', (req, res) => {
-  res.sendFile(path.resolve(__dirname, './', 'dist', 'index.html'));
+
+  fs.readFile('./dist/index.html', 'utf8', function (err, data) {
+
+    const html = pretty(ReactDOMServer.renderToString(<Another/>));
+    if (err) throw err;
+    console.log("dfssfsdfsf")
+    console.log(html);
+    // Inserts the rendered React HTML into our main div
+    var document = data.replace(/<div id="root"><\/div>/, `<div id="root">${html}</div>`);
+    // console.log(document)
+    // Sends the response back to the client
+    res.send(document);
+  });
   // res.send('shreessha')
 });
 // Always return the main index.html, so react-router render the route in the client
