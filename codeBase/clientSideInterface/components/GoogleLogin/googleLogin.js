@@ -1,5 +1,6 @@
 import React from 'react'
 import {browserHistory} from "react-router";
+import './googleLogin.scss'
 /* global gapi */
 class GoogleLogin extends React.Component {
 
@@ -45,8 +46,21 @@ class GoogleLogin extends React.Component {
         xhr.open('POST', '/homepage', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onload = function() {
+          let response = JSON.parse(xhr.response);
+          if (response.status === 'success') {
+            sessionStorage.SessionName = 'Name';
+            sessionStorage.SessionName = 'Email';
+            sessionStorage.SessionName = 'ProfilePic';
+            sessionStorage.setItem("Name",response['name']);
+            sessionStorage.setItem("Email",response['email']);
+            sessionStorage.setItem("ProfilePic",response['picture']);
+            window.location.href = `/homepage`;
+          }
+          else {
+            console.log('Signed in as: ' + xhr.responseText); 
+          }
           console.log('Signed in as: ' + xhr.responseText); 
-          this.props.history.push('/homepage');
+          // this.props.history.push('/homepage');
           // if (xhr.responseText === CUR)
         };
         xhr.send('idtoken=' + JSON.stringify(tokenId))

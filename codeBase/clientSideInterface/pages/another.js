@@ -1,5 +1,5 @@
 import React from 'react'
-import GoogleLogin from '../components/google-login'
+import GoogleLogin from '../components/GoogleLogin/googleLogin'
 /* global gapi */
 class Another extends React.Component {
 

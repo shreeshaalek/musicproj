@@ -1,5 +1,4 @@
 import React from 'react'
-import GoogleLogin from '../components/google-login'
 /* global gapi */
 class Homepage extends React.Component {
 

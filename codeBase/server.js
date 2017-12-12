@@ -7,7 +7,6 @@ var React = require('react');
 var ReactDOMServer = require('react-dom/server');
 var fs = require('fs');
 var pretty = require('pretty');
-import Another from'./clientSideInterface/pages/homepage';
 
 var GoogleAuth = require('google-auth-library');
 
@@ -69,25 +68,8 @@ app.get('/homepage', (req, res) => {
   res.sendFile(path.resolve(__dirname, './', 'dist', 'index.html'));
   // res.send('shreessha')
 });
-app.get('/another', (req, res) => {
-
-  fs.readFile('./dist/index.html', 'utf8', function (err, data) {
-
-    const html = pretty(ReactDOMServer.renderToString(<Another/>));
-    if (err) throw err;
-    console.log("dfssfsdfsf")
-    console.log(html);
-    // Inserts the rendered React HTML into our main div
-    var document = data.replace(/<div id="root"><\/div>/, `<div id="root">${html}</div>`);
-    // console.log(document)
-    // Sends the response back to the client
-    res.send(document);
-  });
-  // res.send('shreessha')
-});
 // Always return the main index.html, so react-router render the route in the client
 app.get('/', (req, res) => {
-  react - component
   // res.sendFile(path.resolve(__dirname, './', 'dist', 'index.html'));
 });
 app.post('/homepage', (req, res) => {
@@ -106,7 +88,12 @@ app.post('/homepage', (req, res) => {
         if (login) {
           var payload = login.getPayload();
           var userid = payload['sub'];
-          resolve(userid);
+          var status = 'success'
+          var sendData = {userid:userid, status:status, name:payload['name'], email:payload['email'], picture:payload['picture']}
+          // sessionStorage.setItem("Name",payload['name']);
+          // sessionStorage.setItem("Email",payload['email']);
+          // sessionStorage.setItem("ProfilePic",payload['picture']);
+          resolve(sendData);
         }
         else {
           reject('fail')
