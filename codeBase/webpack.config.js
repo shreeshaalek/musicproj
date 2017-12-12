@@ -1,4 +1,7 @@
 var path = require('path');
+var webpack = require('webpack');
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+var VendorChunkPlugin = require('webpack-vendor-chunk-plugin');
 // var path = require("path");
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -9,7 +12,7 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
   });
 var DIST_DIR   = path.join(__dirname, "dist");
 module.exports = {
-    entry: './clientSideInterface/index.js',
+    entry: {app: './clientSideInterface/index.js', vendor: ['react', 'redux']},
     output: {
         path: DIST_DIR,
         filename: 'app.bundle.js'
@@ -31,5 +34,23 @@ module.exports = {
         ]
     },
 
-plugins: [HtmlWebpackPluginConfig]
+    plugins: [
+        new BundleAnalyzerPlugin({
+            analyzerMode: 'static'
+        }),
+        HtmlWebpackPluginConfig,
+        new webpack.optimize.CommonsChunkPlugin({
+            name:'vendor', 
+            filename:'vendor.js'
+        }),
+        new VendorChunkPlugin('vendor'),
+        // new webpack.optimize.CommonsChunkPlugin({
+        //     name: 'node-static',
+        //     filename: 'node-static.js',
+        //     minChunks(module, count) {
+        //         var context = module.context;
+        //         return context && context.indexOf('node_modules') >= 0;
+        //     },
+        // }),
+        ]
 };
