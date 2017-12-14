@@ -35,15 +35,15 @@ module.exports = {
     },
 
     plugins: [
-        new BundleAnalyzerPlugin({
-            analyzerMode: 'static'
-        }),
-        HtmlWebpackPluginConfig,
-        new webpack.optimize.CommonsChunkPlugin({
-            name:'vendor', 
-            filename:'vendor.js'
-        }),
-        new VendorChunkPlugin('vendor'),
+        // new BundleAnalyzerPlugin({
+        //     analyzerMode: 'static'
+        // }),
+        HtmlWebpackPluginConfig
+        // new webpack.optimize.CommonsChunkPlugin({
+        //     name:'vendor', 
+        //     filename:'vendor.js'
+        // }),
+        // new VendorChunkPlugin('vendor'),
         // new webpack.optimize.CommonsChunkPlugin({
         //     name: 'node-static',
         //     filename: 'node-static.js',

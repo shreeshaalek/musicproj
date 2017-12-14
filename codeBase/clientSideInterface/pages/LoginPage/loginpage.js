@@ -1,5 +1,6 @@
 import React from 'react'
 import GoogleLogin from '../../components/GoogleLogin/googleLogin';
+import FirebaseLogin from '../../components/FirebaseLogin/firebaseLogin';
 import {Link} from 'react-router-dom';
 /* global gapi */
 class Loginpage extends React.Component {
@@ -17,7 +18,7 @@ class Loginpage extends React.Component {
 
     return (
       <div>
-        <GoogleLogin></GoogleLogin>
+        <FirebaseLogin></FirebaseLogin>
       </div>
     );
   }

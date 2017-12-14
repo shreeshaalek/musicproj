@@ -7,6 +7,9 @@ var React = require('react');
 var ReactDOMServer = require('react-dom/server');
 var fs = require('fs');
 var pretty = require('pretty');
+var admin = require("firebase-admin");
+var serviceAccount = require("./music-project-d68ae-firebase-adminsdk-gihgl-aa0dcd7800.json");
+var admin = require("firebase-admin");
 
 var GoogleAuth = require('google-auth-library');
 
@@ -16,8 +19,14 @@ app.use(bodyParser.json());       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 }));
+
 app.use(passport.initialize());
 // app.use(passport.session());
+ //Firebase initialization
+let defaultApp = admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://music-project-d68ae.firebaseio.com"
+});
 
 passport.serializeUser(function(user, done) {
   done(null, user);
@@ -65,11 +74,29 @@ function(req, res) {
   res.redirect('/homepage');
 });
 app.get('/homepage', (req, res) => {
+  console.log('Enter', defaultApp);
+  admin.auth().createUser({
+    email: "user@example.com",
+    emailVerified: false,
+    phoneNumber: "+11234567890",
+    password: "secretPassword",
+    displayName: "John Doe",
+    photoURL: "http://www.example.com/12345678/photo.png",
+    disabled: false
+  })
+    .then(function(userRecord) {
+      // See the UserRecord reference doc for the contents of userRecord.
+      console.log("Successfully created new user:", userRecord.uid);
+    })
+    .catch(function(error) {
+      console.log("Error creating new user:", error);
+    });
   res.sendFile(path.resolve(__dirname, './', 'dist', 'index.html'));
   // res.send('shreessha')
 });
 // Always return the main index.html, so react-router render the route in the client
 app.get('/', (req, res) => {
+  console.log('Enter');
   // res.sendFile(path.resolve(__dirname, './', 'dist', 'index.html'));
 });
 app.post('/homepage', (req, res) => {
