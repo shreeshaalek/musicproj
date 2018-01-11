@@ -6,6 +6,5 @@ import ReactDOM from 'react-dom';
 import Routes from './router.js'
 
 hydrate((
-    
   <Routes></Routes>  
   ), document.getElementById('root'));

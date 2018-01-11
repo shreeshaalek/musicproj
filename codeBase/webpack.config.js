@@ -1,7 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
-var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-var VendorChunkPlugin = require('webpack-vendor-chunk-plugin');
+// var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// var VendorChunkPlugin = require('webpack-vendor-chunk-plugin');
 // var path = require("path");
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -29,8 +29,7 @@ module.exports = {
                 }, {
                 loader: "sass-loader"
                 }]
-            },
-            { test: /\.hbs/, loader: 'handlebars-template-loader', exclude: /node_modules/ }
+            }
         ]
     },
 

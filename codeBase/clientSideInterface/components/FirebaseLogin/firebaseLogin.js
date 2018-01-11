@@ -1,35 +1,68 @@
 import React from 'react'
 import {browserHistory} from "react-router";
-import  { Redirect } from 'react-router-dom'
+import  { Redirect } from 'react-router-dom';
+import firebaseconfig from '../../global/config';
 /* global gapi */
 class FirebaseLogin extends React.Component {
 
   constructor(props) {
 
     super(props);
-    this.config = {
-        apiKey: "AIzaSyC0recPVMLP0GxfZWhU2iEOjDlD_t07H0Q",
-        authDomain: "music-project-d68ae.firebaseapp.com",
-        databaseURL: "https://music-project-d68ae.firebaseio.com",
-        projectId: "music-project-d68ae",
-        storageBucket: "music-project-d68ae.appspot.com",
-        messagingSenderId: "588519486949"
-      };
+    this.state = {
+      showModal:false
+    }
+    this.uid = '',
+    this.name = ''
+    this.email = '';
+    this.photoUrl = '';
   }
 
   componentDidMount() {
-      firebase.initializeApp(this.config);
+      firebase.initializeApp(firebaseconfig);
+
   }
-  signIn() {
-      console.log('enter')
+  setData(param) {
+    // this.setState({
+    //   showModal: false;
+    // });
+    if (this.state.showModal) {
+      let database = firebase.database();
+      let databaseRef = database.ref(`${param}/` +this.uid);
+      if (param === 'student') {
+        databaseRef.update({
+          username: this.name,
+          email: this.email,
+          photoURL: this.photoUrl,
+          fessPaidDate: '',
+          classPerWeek: ''
+        }).then(()=>window.location.href='homepage');
+      }
+      else {
+          databaseRef.update({
+          username: this.name,
+          email: this.email,
+          photoURL: this.photoUrl
+        }).then(()=>window.location.href='homepage');
+      }
+    }
+  }
+  signIn = () => {
+
     var provider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth().signInWithPopup(provider).then(function(result) {
+    
+    firebase.auth().signInWithPopup(provider).then((result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
-        var token = result.credential.accessToken;
+        let token = result.credential.accessToken;
         // The signed-in user info.
-        var user = result.user;
-        console.log(user);
-        // ...
+        let user = result.user;
+        this.name = user.displayName
+        this.email = user.email;
+        this.photoUrl = user.photoURL;
+        this.uid = user.uid;
+        this.setState({
+          showModal: true
+        });
+
       }).catch(function(error) {
         // Handle Errors here.
         var errorCode = error.code;
@@ -38,7 +71,7 @@ class FirebaseLogin extends React.Component {
         var email = error.email;
         // The firebase.auth.AuthCredential type that was used.
         var credential = error.credential;
-        console.log(errorMessage);
+        // console.log(errorCode, errorMessage, email, credential);
         // ...
       });
   }
@@ -47,10 +80,18 @@ class FirebaseLogin extends React.Component {
     return (
       <div className="main-container">
         <button onClick={this.signIn}>Login</button>
+        <div className={`popup ${this.state.showModal}`} >
+          <button className='student' onClick={()=>{this.setData('student')}}>student</button>
+          <button className='teacher' onClick={()=>{this.setData('teacher')}}>teacher</button>
+        </div>
       </div>
     );
   }
 
 }
-
+// exports.myFunctionName = 
+// functions.database.ref('users/').onWrite((event) => {
+//   // ... Your code here
+//   console.log('added')
+// });
 export default FirebaseLogin
